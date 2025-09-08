@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* VIT Brand Colors - White and Sky Blue Theme */
+    --background: 0 0% 100%;
+    --foreground: 210 20% 25%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 210 20% 25%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 20% 25%;
+
+    --primary: 197 71% 52%; /* Sky Blue */
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 197 71% 65%;
+
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 210 20% 25%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 197 89% 85%; /* Light Sky Blue */
+    --accent-foreground: 210 20% 25%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 197 20% 90%;
+    --input: 197 20% 95%;
+    --ring: 197 71% 52%;
+
+    /* VIT Specific Design Tokens */
+    --vit-blue: 197 71% 52%;
+    --vit-blue-light: 197 89% 85%;
+    --vit-blue-dark: 197 71% 42%;
+    --vit-gradient: linear-gradient(135deg, hsl(var(--vit-blue)), hsl(var(--vit-blue-light)));
+    --vit-gradient-reverse: linear-gradient(135deg, hsl(var(--vit-blue-light)), hsl(var(--vit-blue)));
+    
+    /* Chat Specific */
+    --chat-user-bg: 197 71% 52%;
+    --chat-bot-bg: 210 40% 96%;
+    --chat-hover: 197 89% 90%;
+    
+    /* Shadows */
+    --shadow-soft: 0 2px 8px hsl(var(--vit-blue) / 0.1);
+    --shadow-medium: 0 4px 16px hsl(var(--vit-blue) / 0.15);
+    --shadow-strong: 0 8px 32px hsl(var(--vit-blue) / 0.2);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 210 30% 8%;
+    --foreground: 0 0% 95%;
+
+    --card: 210 30% 10%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 210 30% 10%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 197 71% 52%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 197 71% 65%;
+
+    --secondary: 210 30% 15%;
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 210 30% 15%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 197 71% 35%;
+    --accent-foreground: 0 0% 95%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 95%;
+
+    --border: 210 30% 18%;
+    --input: 210 30% 15%;
+    --ring: 197 71% 52%;
+
+    /* Dark mode VIT colors */
+    --vit-blue: 197 71% 52%;
+    --vit-blue-light: 197 71% 35%;
+    --vit-blue-dark: 197 71% 65%;
+    --vit-gradient: linear-gradient(135deg, hsl(var(--vit-blue)), hsl(var(--vit-blue-light)));
+    --vit-gradient-reverse: linear-gradient(135deg, hsl(var(--vit-blue-light)), hsl(var(--vit-blue)));
+    
+    --chat-user-bg: 197 71% 52%;
+    --chat-bot-bg: 210 30% 15%;
+    --chat-hover: 197 71% 25%;
+    
+    --shadow-soft: 0 2px 8px hsl(0 0% 0% / 0.3);
+    --shadow-medium: 0 4px 16px hsl(0 0% 0% / 0.4);
+    --shadow-strong: 0 8px 32px hsl(0 0% 0% / 0.5);
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
