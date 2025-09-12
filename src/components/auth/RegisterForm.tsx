@@ -4,8 +4,21 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, Mail, Lock, User, GraduationCap, BookOpen } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Loader2,
+  Mail,
+  Lock,
+  User,
+  GraduationCap,
+  BookOpen,
+} from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
 
@@ -14,27 +27,33 @@ interface RegisterFormProps {
   onClose: () => void;
 }
 
-export const RegisterForm = ({ onSwitchToLogin, onClose }: RegisterFormProps) => {
+export const RegisterForm = ({
+  onSwitchToLogin,
+  onClose,
+}: RegisterFormProps) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
     department: "",
-    year: ""
+    year: "",
   });
   const [error, setError] = useState("");
   const { register, isLoading } = useAuth();
 
   const departments = [
     "Computer Engineering",
-    "Information Technology", 
+    "Information Technology",
     "Electronics Engineering",
     "Mechanical Engineering",
     "Civil Engineering",
     "Electrical Engineering",
     "Chemical Engineering",
-    "Instrumentation Engineering"
+    "Instrumentation Engineering",
+    "Biotechnology",
+    "Artificial Intelligence & Data Science",
+    "Cybersecurity",
   ];
 
   const years = ["First Year", "Second Year", "Third Year", "Final Year"];
@@ -43,7 +62,13 @@ export const RegisterForm = ({ onSwitchToLogin, onClose }: RegisterFormProps) =>
     e.preventDefault();
     setError("");
 
-    if (!formData.name || !formData.email || !formData.password) {
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.department ||
+      !formData.year
+    ) {
       setError("Please fill in all required fields");
       return;
     }
@@ -58,23 +83,35 @@ export const RegisterForm = ({ onSwitchToLogin, onClose }: RegisterFormProps) =>
       return;
     }
 
-    const success = await register({
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      department: formData.department,
-      year: formData.year
-    });
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
 
-    if (success) {
-      onClose();
-    } else {
-      setError("Email already exists. Please use a different email.");
+    try {
+      const success = await register({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        department: formData.department,
+        year: formData.year,
+      });
+
+      if (success) {
+        onClose();
+      } else {
+        setError("Email already exists. Please use a different email.");
+      }
+    } catch (error) {
+      setError("Registration failed. Please try again.");
+      console.error("Registration error:", error);
     }
   };
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   return (
@@ -92,19 +129,25 @@ export const RegisterForm = ({ onSwitchToLogin, onClose }: RegisterFormProps) =>
           <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             Join VIT Social
           </h2>
-          <p className="text-gray-600">Create your account to connect with fellow students</p>
+          <p className="text-gray-600">
+            Create your account to connect with fellow students
+          </p>
         </CardHeader>
-        
+
         <CardContent className="space-y-4">
           {error && (
             <Alert className="border-red-200 bg-red-50">
-              <AlertDescription className="text-red-700">{error}</AlertDescription>
+              <AlertDescription className="text-red-700">
+                {error}
+              </AlertDescription>
             </Alert>
           )}
-          
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name" className="text-gray-700 font-medium">Full Name *</Label>
+              <Label htmlFor="name" className="text-gray-700 font-medium">
+                Full Name *
+              </Label>
               <div className="relative">
                 <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                 <Input
@@ -115,12 +158,15 @@ export const RegisterForm = ({ onSwitchToLogin, onClose }: RegisterFormProps) =>
                   onChange={(e) => handleInputChange("name", e.target.value)}
                   className="pl-10 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                   disabled={isLoading}
+                  required
                 />
               </div>
             </div>
-            
+
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-gray-700 font-medium">Email *</Label>
+              <Label htmlFor="email" className="text-gray-700 font-medium">
+                Email *
+              </Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                 <Input
@@ -131,42 +177,63 @@ export const RegisterForm = ({ onSwitchToLogin, onClose }: RegisterFormProps) =>
                   onChange={(e) => handleInputChange("email", e.target.value)}
                   className="pl-10 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                   disabled={isLoading}
+                  required
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
-                <Label className="text-gray-700 font-medium">Department</Label>
-                <Select value={formData.department} onValueChange={(value) => handleInputChange("department", value)}>
+                <Label className="text-gray-700 font-medium">
+                  Department *
+                </Label>
+                <Select
+                  value={formData.department}
+                  onValueChange={(value) =>
+                    handleInputChange("department", value)
+                  }
+                  disabled={isLoading}
+                  required
+                >
                   <SelectTrigger className="border-gray-200">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent>
                     {departments.map((dept) => (
-                      <SelectItem key={dept} value={dept}>{dept}</SelectItem>
+                      <SelectItem key={dept} value={dept}>
+                        {dept}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="space-y-2">
-                <Label className="text-gray-700 font-medium">Year</Label>
-                <Select value={formData.year} onValueChange={(value) => handleInputChange("year", value)}>
+                <Label className="text-gray-700 font-medium">Year *</Label>
+                <Select
+                  value={formData.year}
+                  onValueChange={(value) => handleInputChange("year", value)}
+                  disabled={isLoading}
+                  required
+                >
                   <SelectTrigger className="border-gray-200">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent>
                     {years.map((year) => (
-                      <SelectItem key={year} value={year}>{year}</SelectItem>
+                      <SelectItem key={year} value={year}>
+                        {year}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
             </div>
-            
+
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-gray-700 font-medium">Password *</Label>
+              <Label htmlFor="password" className="text-gray-700 font-medium">
+                Password *
+              </Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                 <Input
@@ -174,15 +241,24 @@ export const RegisterForm = ({ onSwitchToLogin, onClose }: RegisterFormProps) =>
                   type="password"
                   placeholder="Create a password (min 6 chars)"
                   value={formData.password}
-                  onChange={(e) => handleInputChange("password", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("password", e.target.value)
+                  }
                   className="pl-10 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                   disabled={isLoading}
+                  required
+                  minLength={6}
                 />
               </div>
             </div>
-            
+
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword" className="text-gray-700 font-medium">Confirm Password *</Label>
+              <Label
+                htmlFor="confirmPassword"
+                className="text-gray-700 font-medium"
+              >
+                Confirm Password *
+              </Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                 <Input
@@ -190,13 +266,16 @@ export const RegisterForm = ({ onSwitchToLogin, onClose }: RegisterFormProps) =>
                   type="password"
                   placeholder="Confirm your password"
                   value={formData.confirmPassword}
-                  onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("confirmPassword", e.target.value)
+                  }
                   className="pl-10 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                   disabled={isLoading}
+                  required
                 />
               </div>
             </div>
-            
+
             <Button
               type="submit"
               className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 font-semibold"
@@ -212,7 +291,7 @@ export const RegisterForm = ({ onSwitchToLogin, onClose }: RegisterFormProps) =>
               )}
             </Button>
           </form>
-          
+
           <div className="text-center pt-4 border-t border-gray-200">
             <p className="text-gray-600">
               Already have an account?{" "}

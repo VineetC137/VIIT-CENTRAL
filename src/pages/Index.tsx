@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AuthModal } from "@/components/auth/AuthModal";
-import { 
-  MessageCircle, 
-  GraduationCap, 
-  MapPin, 
-  Phone, 
-  Mail, 
-  Users, 
+import {
+  MessageCircle,
+  GraduationCap,
+  MapPin,
+  Phone,
+  Mail,
+  Users,
   Award,
   BookOpen,
   Building,
@@ -23,21 +23,31 @@ import {
   Zap,
   LogIn,
   LogOut,
-  Instagram
+  Instagram,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useAuth } from "@/contexts/AuthContext";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { ChevronDown, User } from "lucide-react";
 
 const Index = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const navigate = useNavigate();
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const { user, logout } = useAuth();
   const [heroRef, heroInView] = useInView({ threshold: 0.1 });
   const [statsRef, statsInView] = useInView({ threshold: 0.1 });
   const [featuresRef, featuresInView] = useInView({ threshold: 0.1 });
+
+  // Load saved userProfile from localStorage
+  const savedProfile = localStorage.getItem("userProfile");
+  const userProfile = savedProfile ? JSON.parse(savedProfile) : null;
+
+  // Decide what to display
+  const activeUser = userProfile || user;
 
   const handleChatToggle = () => {
     setIsChatOpen(!isChatOpen);
@@ -51,6 +61,30 @@ const Index = () => {
     }
   };
 
+  const handleNoteSharing = () => {
+    if (user) {
+      navigate("/notes");
+    } else {
+      setIsAuthModalOpen(true);
+    }
+  };
+
+  const handleProfileClick = () => {
+    if (user) {
+      navigate("/profile");
+    } else {
+      setIsAuthModalOpen(true);
+    }
+  };
+
+  const getAvatarInitials = (name: string) => {
+    return name
+      .split(" ")
+      .map((word) => word[0])
+      .join("")
+      .toUpperCase();
+  };
+
   const stats = [
     { number: "40+", label: "Years of Excellence", icon: Trophy },
     { number: "12+", label: "Engineering Departments", icon: Building },
@@ -62,40 +96,44 @@ const Index = () => {
     {
       icon: BookOpen,
       title: "Academic Excellence",
-      description: "World-class education with industry-aligned curriculum and modern laboratories",
-      color: "from-blue-500 to-cyan-500"
+      description:
+        "World-class education with industry-aligned curriculum and modern laboratories",
+      color: "from-blue-500 to-cyan-500",
     },
     {
       icon: Users,
       title: "VIT Social Network",
-      description: "Connect with fellow students, share experiences, and build lasting friendships",
-      color: "from-purple-500 to-pink-500"
+      description:
+        "Connect with fellow students, share experiences, and build lasting friendships",
+      color: "from-purple-500 to-pink-500",
     },
     {
       icon: Globe,
       title: "Global Opportunities",
-      description: "International collaborations and exchange programs with top universities",
-      color: "from-green-500 to-emerald-500"
+      description:
+        "International collaborations and exchange programs with top universities",
+      color: "from-green-500 to-emerald-500",
     },
     {
       icon: Zap,
       title: "Innovation Hub",
-      description: "State-of-the-art research facilities and startup incubation programs",
-      color: "from-orange-500 to-red-500"
-    }
+      description:
+        "State-of-the-art research facilities and startup incubation programs",
+      color: "from-orange-500 to-red-500",
+    },
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       {/* Navigation */}
-      <motion.header 
+      <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         className="fixed top-0 w-full bg-white/80 backdrop-blur-md shadow-lg border-b border-blue-100 z-50"
       >
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <motion.div 
+            <motion.div
               className="flex items-center gap-3"
               whileHover={{ scale: 1.05 }}
             >
@@ -106,13 +144,18 @@ const Index = () => {
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   VIT Pune
                 </h1>
-                <p className="text-sm text-gray-600">Vishwakarma Institute of Technology</p>
+                <p className="text-sm text-gray-600">
+                  Vishwakarma Institute of Technology
+                </p>
               </div>
             </motion.div>
-            
+
             <div className="flex gap-3">
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button 
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button
                   onClick={handleSocialClick}
                   className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg"
                 >
@@ -120,8 +163,23 @@ const Index = () => {
                   VIT Social
                 </Button>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button 
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button
+                  onClick={handleNoteSharing}
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg"
+                >
+                  <Users className="w-4 h-4 mr-2" />
+                  Note Sharing
+                </Button>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button
                   onClick={handleChatToggle}
                   variant="outline"
                   className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white shadow-lg"
@@ -131,19 +189,100 @@ const Index = () => {
                 </Button>
               </motion.div>
               {user ? (
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button 
-                    onClick={logout}
-                    variant="outline"
-                    className="border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white shadow-lg"
+                <div className="relative">
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Logout
-                  </Button>
-                </motion.div>
+                    <Button
+                      onClick={() => setShowUserMenu(!showUserMenu)}
+                      variant="ghost"
+                      className="flex items-center gap-2 hover:bg-blue-50"
+                    >
+                      <Avatar className="w-8 h-8">
+                        <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-semibold">
+                          {getAvatarInitials(user.name)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="hidden md:block font-medium text-gray-700">
+                        {user.name.split(" ")[0]}
+                      </span>
+                      <ChevronDown className="w-4 h-4 text-gray-400" />
+                    </Button>
+                  </motion.div>
+
+                  {/* User Dropdown Menu */}
+                  {showUserMenu && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-2"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <div className="px-4 py-2 border-b border-gray-100">
+                        <p className="font-semibold text-gray-900">
+                          {user.name}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {user.email || user.department}
+                        </p>
+                      </div>
+
+                      <button
+                        onClick={() => {
+                          handleProfileClick();
+                          setShowUserMenu(false);
+                        }}
+                        className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-3 text-gray-700"
+                      >
+                        <User className="w-4 h-4" />
+                        My Profile
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          handleSocialClick();
+                          setShowUserMenu(false);
+                        }}
+                        className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-3 text-gray-700"
+                      >
+                        <Users className="w-4 h-4" />
+                        VIT Social
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          handleNoteSharing();
+                          setShowUserMenu(false);
+                        }}
+                        className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-3 text-gray-700"
+                      >
+                        <BookOpen className="w-4 h-4" />
+                        My Notes
+                      </button>
+
+                      <div className="border-t border-gray-100 mt-2 pt-2">
+                        <button
+                          onClick={() => {
+                            logout();
+                            setShowUserMenu(false);
+                          }}
+                          className="w-full text-left px-4 py-2 hover:bg-red-50 flex items-center gap-3 text-red-600"
+                        >
+                          <LogOut className="w-4 h-4" />
+                          Logout
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
               ) : (
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button 
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Button
                     onClick={() => setIsAuthModalOpen(true)}
                     variant="outline"
                     className="border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white shadow-lg"
@@ -156,6 +295,14 @@ const Index = () => {
             </div>
           </div>
         </div>
+
+        {/* Click outside to close user menu */}
+        {showUserMenu && (
+          <div
+            className="fixed inset-0 z-40"
+            onClick={() => setShowUserMenu(false)}
+          />
+        )}
       </motion.header>
 
       {/* Hero Section */}
@@ -176,7 +323,7 @@ const Index = () => {
                 {user && (
                   <Badge className="bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 border-0">
                     <Users className="w-3 h-3 mr-1" />
-                    Welcome, {user.name.split(' ')[0]}!
+                    Welcome, {user.name.split(" ")[0]}!
                   </Badge>
                 )}
               </div>
@@ -188,13 +335,17 @@ const Index = () => {
                 <span className="text-gray-800">at VIT Pune</span>
               </h1>
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                Join India's premier engineering institute with 40+ years of excellence. 
-                Experience world-class education, cutting-edge research, and exceptional placement opportunities.
+                Join India's premier engineering institute with 40+ years of
+                excellence. Experience world-class education, cutting-edge
+                research, and exceptional placement opportunities.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button 
-                    size="lg" 
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Button
+                    size="lg"
                     onClick={handleSocialClick}
                     className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg shadow-xl"
                   >
@@ -203,12 +354,20 @@ const Index = () => {
                     <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                 </motion.div>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button 
-                    size="lg" 
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Button
+                    size="lg"
                     variant="outline"
                     className="border-2 border-gray-300 hover:border-blue-600 hover:text-blue-600 px-8 py-4 text-lg"
-                    onClick={() => window.open("https://youtu.be/cZ590Z8ROws?feature=shared", "_blank")}
+                    onClick={() =>
+                      window.open(
+                        "https://youtu.be/cZ590Z8ROws?feature=shared",
+                        "_blank"
+                      )
+                    }
                   >
                     <Play className="w-5 h-5 mr-2" />
                     Watch Campus Tour
@@ -216,7 +375,7 @@ const Index = () => {
                 </motion.div>
               </div>
             </motion.div>
-            
+
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={heroInView ? { opacity: 1, x: 0 } : {}}
@@ -227,17 +386,21 @@ const Index = () => {
                 <div className="w-full h-96 bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
                   <div className="text-center">
                     <Building className="w-16 h-16 text-blue-600 mx-auto mb-4" />
-                    <h3 className="text-xl font-bold text-gray-700">VIT Campus</h3>
+                    <h3 className="text-xl font-bold text-gray-700">
+                      VIT Campus
+                    </h3>
                     <p className="text-gray-600">Modern Infrastructure</p>
                   </div>
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                 <div className="absolute bottom-6 left-6 text-white">
                   <h3 className="text-2xl font-bold mb-2">Beautiful Campus</h3>
-                  <p className="text-white/90">Modern facilities in a serene environment</p>
+                  <p className="text-white/90">
+                    Modern facilities in a serene environment
+                  </p>
                 </div>
               </div>
-              
+
               {/* Floating Cards */}
               <motion.div
                 animate={{ y: [0, -10, 0] }}
@@ -254,7 +417,7 @@ const Index = () => {
                   </div>
                 </div>
               </motion.div>
-              
+
               <motion.div
                 animate={{ y: [0, 10, 0] }}
                 transition={{ duration: 3, repeat: Infinity, delay: 1.5 }}
@@ -291,7 +454,7 @@ const Index = () => {
               Four decades of educational excellence and innovation
             </p>
           </motion.div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
               <motion.div
@@ -307,7 +470,9 @@ const Index = () => {
                     <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                       <stat.icon className="w-8 h-8 text-white" />
                     </div>
-                    <h3 className="text-3xl font-bold text-gray-800 mb-2">{stat.number}</h3>
+                    <h3 className="text-3xl font-bold text-gray-800 mb-2">
+                      {stat.number}
+                    </h3>
                     <p className="text-gray-600 font-medium">{stat.label}</p>
                   </CardContent>
                 </Card>
@@ -330,10 +495,11 @@ const Index = () => {
               Why Choose VIT Pune?
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover what makes us one of India's leading engineering institutions
+              Discover what makes us one of India's leading engineering
+              institutions
             </p>
           </motion.div>
-          
+
           <div className="grid md:grid-cols-2 gap-8">
             {features.map((feature, index) => (
               <motion.div
@@ -343,11 +509,17 @@ const Index = () => {
                 transition={{ duration: 0.8, delay: index * 0.2 }}
                 whileHover={{ scale: 1.02 }}
                 className="group cursor-pointer"
-                onClick={feature.title === "VIT Social Network" ? handleSocialClick : undefined}
+                onClick={
+                  feature.title === "VIT Social Network"
+                    ? handleSocialClick
+                    : undefined
+                }
               >
                 <Card className="p-8 border-0 shadow-xl bg-gradient-to-br from-white to-gray-50/50 hover:shadow-2xl transition-all duration-300 group-hover:bg-gradient-to-br group-hover:from-white group-hover:to-blue-50/30">
                   <CardContent className="p-0">
-                    <div className={`w-16 h-16 bg-gradient-to-r ${feature.color} rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                    <div
+                      className={`w-16 h-16 bg-gradient-to-r ${feature.color} rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                    >
                       <feature.icon className="w-8 h-8 text-white" />
                     </div>
                     <h3 className="text-2xl font-bold text-gray-800 mb-4 group-hover:text-blue-600 transition-colors">
@@ -383,17 +555,23 @@ const Index = () => {
               Our Beautiful Campus
             </h2>
             <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-              Experience world-class infrastructure and a vibrant learning environment
+              Experience world-class infrastructure and a vibrant learning
+              environment
             </p>
           </motion.div>
-          
+
           <div className="grid md:grid-cols-2 gap-8">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
               className="relative rounded-2xl overflow-hidden shadow-2xl group cursor-pointer"
-              onClick={() => window.open("https://youtu.be/cZ590Z8ROws?feature=shared", "_blank")}
+              onClick={() =>
+                window.open(
+                  "https://youtu.be/cZ590Z8ROws?feature=shared",
+                  "_blank"
+                )
+              }
             >
               <div className="w-full h-64 bg-gradient-to-br from-blue-200 to-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                 <div className="text-center text-white">
@@ -405,16 +583,23 @@ const Index = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
               <div className="absolute bottom-6 left-6 text-white">
                 <h3 className="text-xl font-bold mb-1">Academic Block</h3>
-                <p className="text-white/90">State-of-the-art classrooms and laboratories</p>
+                <p className="text-white/90">
+                  State-of-the-art classrooms and laboratories
+                </p>
               </div>
             </motion.div>
-            
+
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative rounded-2xl overflow-hidden shadow-2xl group cursor-pointer"
-              onClick={() => window.open("https://www.instagram.com/official_vitpune/?hl=en", "_blank")}
+              onClick={() =>
+                window.open(
+                  "https://www.instagram.com/official_vitpune/?hl=en",
+                  "_blank"
+                )
+              }
             >
               <div className="w-full h-64 bg-gradient-to-br from-green-200 to-green-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                 <div className="text-center text-white">
@@ -426,7 +611,9 @@ const Index = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
               <div className="absolute bottom-6 left-6 text-white">
                 <h3 className="text-xl font-bold mb-1">Campus Life</h3>
-                <p className="text-white/90">Lush green spaces for recreation and events</p>
+                <p className="text-white/90">
+                  Lush green spaces for recreation and events
+                </p>
               </div>
             </motion.div>
           </div>
@@ -449,7 +636,7 @@ const Index = () => {
               Ready to start your journey with us?
             </p>
           </motion.div>
-          
+
           <Card className="max-w-4xl mx-auto border-0 shadow-2xl bg-gradient-to-br from-white to-blue-50/30">
             <CardContent className="p-8">
               <div className="grid md:grid-cols-3 gap-8">
@@ -462,14 +649,18 @@ const Index = () => {
                   <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300">
                     <MapPin className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Address</h3>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                    Address
+                  </h3>
                   <p className="text-gray-600 text-sm leading-relaxed">
-                    Survey No. 3, 4, 9/1, 9/2<br />
-                    Kondhwa (Budruk)<br />
+                    Survey No. 3, 4, 9/1, 9/2
+                    <br />
+                    Kondhwa (Budruk)
+                    <br />
                     Pune - 411048, Maharashtra
                   </p>
                 </motion.div>
-                
+
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -479,13 +670,18 @@ const Index = () => {
                   <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300">
                     <Phone className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Phone</h3>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                    Phone
+                  </h3>
                   <p className="text-gray-600 text-sm">
-                    +91-20-2660 1881/82/83<br />
-                    <span className="text-xs text-gray-500">Mon - Fri, 9:00 AM - 5:00 PM</span>
+                    +91-20-2660 1881/82/83
+                    <br />
+                    <span className="text-xs text-gray-500">
+                      Mon - Fri, 9:00 AM - 5:00 PM
+                    </span>
                   </p>
                 </motion.div>
-                
+
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -495,14 +691,19 @@ const Index = () => {
                   <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300">
                     <Mail className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Email</h3>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                    Email
+                  </h3>
                   <p className="text-gray-600 text-sm">
-                    admission@vit.edu<br />
-                    <span className="text-xs text-gray-500">We'll respond within 24 hours</span>
+                    admission@vit.edu
+                    <br />
+                    <span className="text-xs text-gray-500">
+                      We'll respond within 24 hours
+                    </span>
                   </p>
                 </motion.div>
               </div>
-              
+
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -510,14 +711,14 @@ const Index = () => {
                 className="mt-8 pt-8 border-t border-gray-200 text-center"
               >
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button 
+                  <Button
                     size="lg"
                     className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8"
                   >
                     <Calendar className="w-5 h-5 mr-2" />
                     Schedule Campus Visit
                   </Button>
-                  <Button 
+                  <Button
                     size="lg"
                     variant="outline"
                     className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8"
@@ -543,54 +744,109 @@ const Index = () => {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold">VIT Pune</h3>
-                  <p className="text-xs text-gray-300">Excellence in Education</p>
+                  <p className="text-xs text-gray-300">
+                    Excellence in Education
+                  </p>
                 </div>
               </div>
               <p className="text-gray-300 text-sm leading-relaxed">
-                Shaping future engineers and innovators since 1983 with world-class education and industry partnerships.
+                Shaping future engineers and innovators since 1983 with
+                world-class education and industry partnerships.
               </p>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
               <ul className="space-y-2 text-sm text-gray-300">
-                <li><a href="#" className="hover:text-white transition-colors">Admissions</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Academics</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Placements</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Research</a></li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Admissions
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Academics
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Placements
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Research
+                  </a>
+                </li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-semibold mb-4">Student Life</h4>
               <ul className="space-y-2 text-sm text-gray-300">
-                <li><a href="/social" className="hover:text-white transition-colors">VIT Social</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Campus Events</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Clubs & Activities</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Sports</a></li>
+                <li>
+                  <a
+                    href="/social"
+                    className="hover:text-white transition-colors"
+                  >
+                    VIT Social
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Campus Events
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Clubs & Activities
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Sports
+                  </a>
+                </li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="text-lg font-semibold mb-4">Connect</h4>
               <ul className="space-y-2 text-sm text-gray-300">
-                <li><a href="#" className="hover:text-white transition-colors">Facebook</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">LinkedIn</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Twitter</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Instagram</a></li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Facebook
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    LinkedIn
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Twitter
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-white transition-colors">
+                    Instagram
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t border-gray-700 pt-8 text-center">
             <p className="text-gray-300 text-sm">
-              © 2024 Vishwakarma Institute of Technology, Pune. All rights reserved.
+              © 2024 Vishwakarma Institute of Technology, Pune. All rights
+              reserved.
             </p>
             <p className="text-gray-400 text-xs mt-2">
               Powered by VIT Social Platform | For official information visit{" "}
-              <a 
-                href="https://www.vit.edu/" 
-                target="_blank" 
+              <a
+                href="https://www.vit.edu/"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-400 hover:text-blue-300 transition-colors"
               >
@@ -602,14 +858,14 @@ const Index = () => {
       </footer>
 
       {/* Chatbot */}
-      <VITChatbot 
+      <VITChatbot
         isMinimized={!isChatOpen}
         onToggleMinimize={handleChatToggle}
         onClose={() => setIsChatOpen(false)}
       />
 
       {/* Auth Modal */}
-      <AuthModal 
+      <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
       />

@@ -1,5 +1,12 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
+// Types
 interface User {
   id: string;
   name: string;
@@ -8,113 +15,259 @@ interface User {
   year?: string;
 }
 
-interface AuthContextType {
-  user: User | null;
-  login: (email: string, password: string) => Promise<boolean>;
-  register: (userData: RegisterData) => Promise<boolean>;
-  logout: () => void;
-  isLoading: boolean;
+interface UserProfile {
+  id?: string;
+  name: string;
+  email: string;
+  department: string;
+  year: string;
 }
 
 interface RegisterData {
   name: string;
   email: string;
   password: string;
-  department?: string;
-  year?: string;
+  department: string;
+  year: string;
+}
+
+interface LoginData {
+  email: string;
+  password: string;
+}
+
+interface AuthContextType {
+  user: User | null;
+  isLoading: boolean;
+  login: (data: LoginData) => Promise<boolean>;
+  register: (data: RegisterData) => Promise<boolean>;
+  logout: () => void;
+  fetchUserProfile: (userId: string) => Promise<UserProfile | null>;
+  updateUserProfile: (
+    userId: string,
+    profileData: UserProfile
+  ) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+// Utility functions for localStorage operations
+const USERS_KEY = "vit_users";
+const CURRENT_USER_KEY = "vit_current_user";
+
+const loadUsers = (): User[] => {
+  try {
+    const saved = localStorage.getItem(USERS_KEY);
+    return saved ? JSON.parse(saved) : [];
+  } catch (error) {
+    console.error("Error loading users:", error);
+    return [];
   }
-  return context;
 };
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+const saveUsers = (users: User[]) => {
+  try {
+    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  } catch (error) {
+    console.error("Error saving users:", error);
+  }
+};
 
-  // Load user from localStorage on app start
-  useEffect(() => {
-    const savedUser = localStorage.getItem('vit_user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
+const loadCurrentUser = (): User | null => {
+  try {
+    const saved = localStorage.getItem(CURRENT_USER_KEY);
+    return saved ? JSON.parse(saved) : null;
+  } catch (error) {
+    console.error("Error loading current user:", error);
+    return null;
+  }
+};
+
+const saveCurrentUser = (user: User | null) => {
+  try {
+    if (user) {
+      localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+    } else {
+      localStorage.removeItem(CURRENT_USER_KEY);
     }
-    setIsLoading(false);
+  } catch (error) {
+    console.error("Error saving current user:", error);
+  }
+};
+
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Load user from localStorage on mount
+  useEffect(() => {
+    const currentUser = loadCurrentUser();
+    if (currentUser) {
+      setUser(currentUser);
+    }
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
-    setIsLoading(true);
-    
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Get users from localStorage
-    const users = JSON.parse(localStorage.getItem('vit_users') || '[]');
-    const foundUser = users.find((u: any) => u.email === email && u.password === password);
-    
-    if (foundUser) {
-      const { password: _, ...userWithoutPassword } = foundUser;
-      setUser(userWithoutPassword);
-      localStorage.setItem('vit_user', JSON.stringify(userWithoutPassword));
-      setIsLoading(false);
+  const register = async (data: RegisterData): Promise<boolean> => {
+    try {
+      setIsLoading(true);
+
+      const users = loadUsers();
+
+      // Check if email already exists
+      const existingUser = users.find(
+        (u) => u.email.toLowerCase() === data.email.toLowerCase()
+      );
+      if (existingUser) {
+        return false;
+      }
+
+      // Create new user with complete profile
+      const newUser: User = {
+        id: Date.now().toString(), // Simple ID generation
+        name: data.name,
+        email: data.email,
+        department: data.department,
+        year: data.year,
+      };
+
+      // Save to users list
+      users.push(newUser);
+      saveUsers(users);
+
+      // Set as current user and save
+      setUser(newUser);
+      saveCurrentUser(newUser);
+
       return true;
+    } catch (error) {
+      console.error("Registration error:", error);
+      return false;
+    } finally {
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
-    return false;
   };
 
-  const register = async (userData: RegisterData): Promise<boolean> => {
-    setIsLoading(true);
-    
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Get existing users
-    const users = JSON.parse(localStorage.getItem('vit_users') || '[]');
-    
-    // Check if user already exists
-    if (users.find((u: any) => u.email === userData.email)) {
-      setIsLoading(false);
+  const login = async (data: LoginData): Promise<boolean> => {
+    try {
+      setIsLoading(true);
+
+      const users = loadUsers();
+
+      // Find user by email (case-insensitive)
+      const user = users.find(
+        (u) => u.email.toLowerCase() === data.email.toLowerCase()
+      );
+
+      if (user) {
+        // In a real app, you would verify the password here
+        // For demo purposes, we'll accept any password
+
+        setUser(user);
+        saveCurrentUser(user);
+        return true;
+      }
+
       return false;
+    } catch (error) {
+      console.error("Login error:", error);
+      return false;
+    } finally {
+      setIsLoading(false);
     }
-    
-    // Create new user
-    const newUser = {
-      id: Date.now().toString(),
-      ...userData
-    };
-    
-    // Save to users list
-    users.push(newUser);
-    localStorage.setItem('vit_users', JSON.stringify(users));
-    
-    // Log in the user
-    const { password: _, ...userWithoutPassword } = newUser;
-    setUser(userWithoutPassword);
-    localStorage.setItem('vit_user', JSON.stringify(userWithoutPassword));
-    
-    setIsLoading(false);
-    return true;
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('vit_user');
+    saveCurrentUser(null);
   };
 
-  const value = {
+  const fetchUserProfile = async (
+    userId: string
+  ): Promise<UserProfile | null> => {
+    try {
+      const users = loadUsers();
+      const user = users.find((u) => u.id === userId);
+
+      if (user) {
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          department: user.department || "",
+          year: user.year || "",
+        };
+      }
+
+      return null;
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+      return null;
+    }
+  };
+
+  const updateUserProfile = async (
+    userId: string,
+    profileData: UserProfile
+  ): Promise<boolean> => {
+    try {
+      setIsLoading(true);
+
+      const users = loadUsers();
+      const userIndex = users.findIndex((u) => u.id === userId);
+
+      if (userIndex === -1) {
+        return false;
+      }
+
+      // Update user data
+      users[userIndex] = {
+        ...users[userIndex],
+        name: profileData.name,
+        email: profileData.email,
+        department: profileData.department,
+        year: profileData.year,
+      };
+
+      // Save updated users list
+      saveUsers(users);
+
+      // Update current user if it's the same user
+      if (user && user.id === userId) {
+        const updatedUser = users[userIndex];
+        setUser(updatedUser);
+        saveCurrentUser(updatedUser);
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Error updating user profile:", error);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const value: AuthContextType = {
     user,
+    isLoading,
     login,
     register,
     logout,
-    isLoading
+    fetchUserProfile,
+    updateUserProfile,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+export const useAuth = (): AuthContextType => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
 };
