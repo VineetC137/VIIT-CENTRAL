@@ -1,5 +1,8 @@
+/* stylelint-disable-next-line at-rule-no-unknown */
 @tailwind base;
+/* stylelint-disable-next-line at-rule-no-unknown */
 @tailwind components;
+/* stylelint-disable-next-line at-rule-no-unknown */
 @tailwind utilities;
 
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
@@ -8,120 +11,115 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* VIT Brand Colors - White and Sky Blue Theme */
+    /* Modern Professional Color Palette */
     --background: 0 0% 100%;
-    --foreground: 210 20% 25%;
+    --foreground: 222 84% 4.9%;
 
     --card: 0 0% 100%;
-    --card-foreground: 210 20% 25%;
+    --card-foreground: 222 84% 4.9%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 210 20% 25%;
+    --popover-foreground: 222 84% 4.9%;
 
-    --primary: 197 71% 52%; /* Sky Blue */
-    --primary-foreground: 0 0% 100%;
-    --primary-glow: 197 71% 65%;
+    --primary: 221 83% 53%;
+    /* Professional Blue */
+    --primary-foreground: 210 40% 98%;
+    --primary-hover: 221 83% 45%;
 
     --secondary: 210 40% 96%;
-    --secondary-foreground: 210 20% 25%;
+    --secondary-foreground: 222 47% 11%;
 
     --muted: 210 40% 96%;
     --muted-foreground: 215 16% 47%;
 
-    --accent: 197 89% 85%; /* Light Sky Blue */
-    --accent-foreground: 210 20% 25%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 47% 11%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 197 20% 90%;
-    --input: 197 20% 95%;
-    --ring: 197 71% 52%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 221 83% 53%;
 
-    /* VIT Specific Design Tokens */
-    --vit-blue: 197 71% 52%;
-    --vit-blue-light: 197 89% 85%;
-    --vit-blue-dark: 197 71% 42%;
-    --vit-gradient: linear-gradient(135deg, hsl(var(--vit-blue)), hsl(var(--vit-blue-light)));
-    --vit-gradient-reverse: linear-gradient(135deg, hsl(var(--vit-blue-light)), hsl(var(--vit-blue)));
-    
-    /* Chat Specific */
-    --chat-user-bg: 197 71% 52%;
-    --chat-bot-bg: 210 40% 96%;
-    --chat-hover: 197 89% 90%;
-    
-    /* Shadows */
-    --shadow-soft: 0 2px 8px hsl(var(--vit-blue) / 0.1);
-    --shadow-medium: 0 4px 16px hsl(var(--vit-blue) / 0.15);
-    --shadow-strong: 0 8px 32px hsl(var(--vit-blue) / 0.2);
-    
-    /* Animations */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    /* VIT Professional Design Tokens */
+    --vit-primary: 221 83% 53%;
+    /* Deep Blue */
+    --vit-secondary: 142 76% 36%;
+    /* Forest Green */
+    --vit-accent: 24 95% 53%;
+    /* Orange */
+    --vit-neutral: 215 16% 47%;
+    /* Gray */
 
-    --radius: 0.5rem;
+    /* Modern Backgrounds */
+    --bg-pattern: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f1f5f9' fill-opacity='0.4'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+
+    /* Professional Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+    /* Smooth Transitions */
+    --transition-all: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-colors: color 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    --background: 210 30% 8%;
-    --foreground: 0 0% 95%;
+    --background: 222 84% 4.9%;
+    --foreground: 210 40% 98%;
 
-    --card: 210 30% 10%;
-    --card-foreground: 0 0% 95%;
+    --card: 222 84% 4.9%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 210 30% 10%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 222 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 197 71% 52%;
-    --primary-foreground: 0 0% 100%;
-    --primary-glow: 197 71% 65%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 222 84% 4.9%;
+    --primary-hover: 221 83% 45%;
 
-    --secondary: 210 30% 15%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 217 32% 17%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 210 30% 15%;
+    --muted: 217 32% 17%;
     --muted-foreground: 215 20% 65%;
 
-    --accent: 197 71% 35%;
-    --accent-foreground: 0 0% 95%;
+    --accent: 217 32% 17%;
+    --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62% 50%;
-    --destructive-foreground: 0 0% 95%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 210 30% 18%;
-    --input: 210 30% 15%;
-    --ring: 197 71% 52%;
+    --border: 217 32% 17%;
+    --input: 217 32% 17%;
+    --ring: 221 83% 53%;
 
-    /* Dark mode VIT colors */
-    --vit-blue: 197 71% 52%;
-    --vit-blue-light: 197 71% 35%;
-    --vit-blue-dark: 197 71% 65%;
-    --vit-gradient: linear-gradient(135deg, hsl(var(--vit-blue)), hsl(var(--vit-blue-light)));
-    --vit-gradient-reverse: linear-gradient(135deg, hsl(var(--vit-blue-light)), hsl(var(--vit-blue)));
-    
-    --chat-user-bg: 197 71% 52%;
-    --chat-bot-bg: 210 30% 15%;
-    --chat-hover: 197 71% 25%;
-    
-    --shadow-soft: 0 2px 8px hsl(0 0% 0% / 0.3);
-    --shadow-medium: 0 4px 16px hsl(0 0% 0% / 0.4);
-    --shadow-strong: 0 8px 32px hsl(0 0% 0% / 0.5);
+    /* Dark mode professional colors */
+    --vit-primary: 221 83% 53%;
+    --vit-secondary: 142 76% 36%;
+    --vit-accent: 24 95% 53%;
+    --vit-neutral: 215 20% 65%;
+
+    --bg-pattern: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23334155' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -141,4 +139,100 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@layer components {
+
+  /* Modern Glass Effect */
+  .glass {
+    @apply bg-white/80 backdrop-blur-md border border-white/20;
+  }
+
+  .glass-dark {
+    @apply bg-gray-900/80 backdrop-blur-md border border-gray-800/20;
+  }
+
+  /* Professional Gradients */
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--vit-primary)), hsl(var(--vit-secondary)));
+  }
+
+  .gradient-accent {
+    background: linear-gradient(135deg, hsl(var(--vit-accent)), hsl(var(--vit-primary)));
+  }
+
+  .gradient-subtle {
+    background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--muted)));
+  }
+
+  /* Modern Animations */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out;
+  }
+
+  /* Professional Shadows */
+  .shadow-professional {
+    box-shadow: var(--shadow-lg);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-md);
+  }
+
+  .shadow-button {
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* Modern Hover Effects */
+  .hover-lift {
+    transition: var(--transition-all);
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-xl);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Campus Photo Styles */
+.campus-photo {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.campus-overlay {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 100%);
 }

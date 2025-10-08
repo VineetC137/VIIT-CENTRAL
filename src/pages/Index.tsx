@@ -98,38 +98,46 @@ const Index = () => {
       title: "Academic Excellence",
       description:
         "World-class education with industry-aligned curriculum and modern laboratories",
-      color: "from-blue-500 to-cyan-500",
+      color: "bg-blue-600",
+      bgColor: "bg-blue-50",
+      isClickable: false,
     },
     {
       icon: Users,
       title: "VIT Social Network",
       description:
-        "Connect with fellow students, share experiences, and build lasting friendships",
-      color: "from-purple-500 to-pink-500",
+        "Connect with fellow students, share experiences, and build lasting friendships. Join discussions, share notes, and stay connected with your peers.",
+      color: "bg-primary",
+      bgColor: "bg-primary/5",
+      isClickable: true,
     },
     {
-      icon: Globe,
-      title: "Global Opportunities",
+      icon: BookOpen,
+      title: "Note Sharing Platform",
       description:
-        "International collaborations and exchange programs with top universities",
-      color: "from-green-500 to-emerald-500",
+        "Share and access study materials, lecture notes, and academic resources. Collaborate with classmates and enhance your learning experience.",
+      color: "bg-green-600",
+      bgColor: "bg-green-50",
+      isClickable: true,
     },
     {
       icon: Zap,
       title: "Innovation Hub",
       description:
         "State-of-the-art research facilities and startup incubation programs",
-      color: "from-orange-500 to-red-500",
+      color: "bg-orange-600",
+      bgColor: "bg-orange-50",
+      isClickable: false,
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-background">
       {/* Navigation */}
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className="fixed top-0 w-full bg-white/80 backdrop-blur-md shadow-lg border-b border-blue-100 z-50"
+        className="fixed top-0 w-full glass shadow-professional border-b z-50"
       >
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
@@ -137,14 +145,14 @@ const Index = () => {
               className="flex items-center gap-3"
               whileHover={{ scale: 1.05 }}
             >
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                <GraduationCap className="w-7 h-7 text-white" />
+              <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-card hover-lift">
+                <GraduationCap className="w-7 h-7 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <h1 className="text-2xl font-bold text-primary">
                   VIT Pune
                 </h1>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-muted-foreground">
                   Vishwakarma Institute of Technology
                 </p>
               </div>
@@ -157,7 +165,7 @@ const Index = () => {
               >
                 <Button
                   onClick={handleSocialClick}
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg"
+                  className="bg-primary hover:bg-primary-hover text-primary-foreground shadow-button hover-lift"
                 >
                   <Users className="w-4 h-4 mr-2" />
                   VIT Social
@@ -169,9 +177,9 @@ const Index = () => {
               >
                 <Button
                   onClick={handleNoteSharing}
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg"
+                  className="bg-green-600 hover:bg-green-700 text-white shadow-button hover-lift"
                 >
-                  <Users className="w-4 h-4 mr-2" />
+                  <BookOpen className="w-4 h-4 mr-2" />
                   Note Sharing
                 </Button>
               </motion.div>
@@ -182,7 +190,7 @@ const Index = () => {
                 <Button
                   onClick={handleChatToggle}
                   variant="outline"
-                  className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white shadow-lg"
+                  className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground shadow-button hover-lift"
                 >
                   <MessageCircle className="w-4 h-4 mr-2" />
                   AI Assistant
@@ -200,7 +208,7 @@ const Index = () => {
                       className="flex items-center gap-2 hover:bg-blue-50"
                     >
                       <Avatar className="w-8 h-8">
-                        <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-semibold">
+                        <AvatarFallback className="bg-primary text-primary-foreground text-xs font-semibold">
                           {getAvatarInitials(user.name)}
                         </AvatarFallback>
                       </Avatar>
@@ -217,7 +225,7 @@ const Index = () => {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-2"
+                      className="absolute right-0 top-full mt-2 w-48 glass rounded-lg shadow-professional py-2 animate-slide-up"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <div className="px-4 py-2 border-b border-gray-100">
@@ -285,7 +293,7 @@ const Index = () => {
                   <Button
                     onClick={() => setIsAuthModalOpen(true)}
                     variant="outline"
-                    className="border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white shadow-lg"
+                    className="border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white shadow-button hover-lift"
                   >
                     <LogIn className="w-4 h-4 mr-2" />
                     Login
@@ -307,7 +315,7 @@ const Index = () => {
 
       {/* Hero Section */}
       <section ref={heroRef} className="pt-24 pb-16 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-green-600/5"></div>
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -316,25 +324,25 @@ const Index = () => {
               transition={{ duration: 0.8 }}
             >
               <div className="flex items-center gap-4 mb-4">
-                <Badge className="bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 border-0">
+                <Badge className="bg-primary/10 text-primary border border-primary/20 hover-lift">
                   <Star className="w-3 h-3 mr-1" />
                   Established 1983
                 </Badge>
                 {user && (
-                  <Badge className="bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 border-0">
+                  <Badge className="bg-green-100 text-green-700 border border-green-200 hover-lift">
                     <Users className="w-3 h-3 mr-1" />
                     Welcome, {user.name.split(" ")[0]}!
                   </Badge>
                 )}
               </div>
               <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                <span className="text-primary">
                   Shape Your Future
                 </span>
                 <br />
-                <span className="text-gray-800">at VIT Pune</span>
+                <span className="text-foreground">at VIT Pune</span>
               </h1>
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+              <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
                 Join India's premier engineering institute with 40+ years of
                 excellence. Experience world-class education, cutting-edge
                 research, and exceptional placement opportunities.
@@ -347,7 +355,7 @@ const Index = () => {
                   <Button
                     size="lg"
                     onClick={handleSocialClick}
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg shadow-xl"
+                    className="bg-primary hover:bg-primary-hover text-primary-foreground px-8 py-4 text-lg shadow-professional hover-lift"
                   >
                     <Users className="w-5 h-5 mr-2" />
                     {user ? "Go to VIT Social" : "Join VIT Community"}
@@ -361,7 +369,7 @@ const Index = () => {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="border-2 border-gray-300 hover:border-blue-600 hover:text-blue-600 px-8 py-4 text-lg"
+                    className="border-2 border-border hover:border-primary hover:text-primary px-8 py-4 text-lg shadow-button hover-lift"
                     onClick={() =>
                       window.open(
                         "https://youtu.be/cZ590Z8ROws?feature=shared",
@@ -382,19 +390,35 @@ const Index = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative"
             >
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                <div className="w-full h-96 bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-                  <div className="text-center">
-                    <Building className="w-16 h-16 text-blue-600 mx-auto mb-4" />
-                    <h3 className="text-xl font-bold text-gray-700">
-                      VIT Campus
+              <div className="relative rounded-2xl overflow-hidden shadow-professional hover-lift cursor-pointer"
+                   onClick={() => window.open("https://youtu.be/cZ590Z8ROws", "_blank")}>
+                <div className="w-full h-96 campus-photo bg-slate-100 flex items-center justify-center border border-border"
+                     style={{
+                       backgroundImage: `url('data:image/svg+xml;base64,${btoa(`
+                         <svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+                           <rect width="400" height="300" fill="#f1f5f9"/>
+                           <rect x="50" y="50" width="300" height="150" fill="#e2e8f0" rx="8"/>
+                           <rect x="70" y="70" width="80" height="110" fill="#cbd5e1"/>
+                           <rect x="170" y="70" width="80" height="110" fill="#cbd5e1"/>
+                           <rect x="270" y="70" width="60" height="110" fill="#cbd5e1"/>
+                           <circle cx="200" cy="240" r="30" fill="#22c55e"/>
+                           <circle cx="150" cy="250" r="20" fill="#22c55e"/>
+                           <circle cx="250" cy="250" r="25" fill="#22c55e"/>
+                           <text x="200" y="280" text-anchor="middle" fill="#64748b" font-size="12">VIT Campus</text>
+                         </svg>
+                       `)}`
+                     }}>
+                  <div className="text-center bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-lg">
+                    <Play className="w-16 h-16 text-primary mx-auto mb-4" />
+                    <h3 className="text-xl font-bold text-foreground mb-2">
+                      Campus Virtual Tour
                     </h3>
-                    <p className="text-gray-600">Modern Infrastructure</p>
+                    <p className="text-muted-foreground">Click to watch our campus tour</p>
                   </div>
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                <div className="absolute inset-0 campus-overlay"></div>
                 <div className="absolute bottom-6 left-6 text-white">
-                  <h3 className="text-2xl font-bold mb-2">Beautiful Campus</h3>
+                  <h3 className="text-2xl font-bold mb-2">VIT Pune Campus</h3>
                   <p className="text-white/90">
                     Modern facilities in a serene environment
                   </p>
@@ -405,15 +429,15 @@ const Index = () => {
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 3, repeat: Infinity }}
-                className="absolute -top-4 -right-4 bg-white rounded-xl shadow-xl p-4"
+                className="absolute -top-4 -right-4 glass rounded-xl shadow-card p-4 hover-lift"
               >
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
                     <Trophy className="w-4 h-4 text-green-600" />
                   </div>
                   <div>
-                    <p className="font-semibold text-sm">Top Ranked</p>
-                    <p className="text-xs text-gray-600">Engineering College</p>
+                    <p className="font-semibold text-sm text-foreground">Top Ranked</p>
+                    <p className="text-xs text-muted-foreground">Engineering College</p>
                   </div>
                 </div>
               </motion.div>
@@ -421,15 +445,15 @@ const Index = () => {
               <motion.div
                 animate={{ y: [0, 10, 0] }}
                 transition={{ duration: 3, repeat: Infinity, delay: 1.5 }}
-                className="absolute -bottom-4 -left-4 bg-white rounded-xl shadow-xl p-4"
+                className="absolute -bottom-4 -left-4 glass rounded-xl shadow-card p-4 hover-lift"
               >
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Users className="w-4 h-4 text-blue-600" />
+                  <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Users className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <p className="font-semibold text-sm">5000+</p>
-                    <p className="text-xs text-gray-600">Active Students</p>
+                    <p className="font-semibold text-sm text-foreground">5000+</p>
+                    <p className="text-xs text-muted-foreground">Active Students</p>
                   </div>
                 </div>
               </motion.div>
@@ -439,7 +463,7 @@ const Index = () => {
       </section>
 
       {/* Stats Section */}
-      <section ref={statsRef} className="py-16 bg-white/50 backdrop-blur-sm">
+      <section ref={statsRef} className="py-16 glass">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -447,10 +471,10 @@ const Index = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <h2 className="text-4xl font-bold mb-4 text-primary">
               Excellence in Numbers
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Four decades of educational excellence and innovation
             </p>
           </motion.div>
@@ -465,15 +489,15 @@ const Index = () => {
                 whileHover={{ scale: 1.05 }}
                 className="text-center"
               >
-                <Card className="p-8 border-0 shadow-xl bg-gradient-to-br from-white to-blue-50/50 hover:shadow-2xl transition-all duration-300">
+                <Card className="p-8 border shadow-professional bg-card hover-lift">
                   <CardContent className="p-0">
-                    <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                      <stat.icon className="w-8 h-8 text-white" />
+                    <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-card">
+                      <stat.icon className="w-8 h-8 text-primary-foreground" />
                     </div>
-                    <h3 className="text-3xl font-bold text-gray-800 mb-2">
+                    <h3 className="text-3xl font-bold text-foreground mb-2">
                       {stat.number}
                     </h3>
-                    <p className="text-gray-600 font-medium">{stat.label}</p>
+                    <p className="text-muted-foreground font-medium">{stat.label}</p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -491,10 +515,10 @@ const Index = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <h2 className="text-4xl font-bold mb-4 text-primary">
               Why Choose VIT Pune?
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Discover what makes us one of India's leading engineering
               institutions
             </p>
@@ -508,29 +532,33 @@ const Index = () => {
                 animate={featuresInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.8, delay: index * 0.2 }}
                 whileHover={{ scale: 1.02 }}
-                className="group cursor-pointer"
+                className={`group ${feature.isClickable ? 'cursor-pointer' : ''}`}
                 onClick={
                   feature.title === "VIT Social Network"
                     ? handleSocialClick
+                    : feature.title === "Note Sharing Platform"
+                    ? handleNoteSharing
                     : undefined
                 }
               >
-                <Card className="p-8 border-0 shadow-xl bg-gradient-to-br from-white to-gray-50/50 hover:shadow-2xl transition-all duration-300 group-hover:bg-gradient-to-br group-hover:from-white group-hover:to-blue-50/30">
+                <Card className={`p-8 border shadow-professional ${feature.bgColor} hover-lift group ${feature.isClickable ? 'hover:shadow-xl' : ''}`}>
                   <CardContent className="p-0">
                     <div
-                      className={`w-16 h-16 bg-gradient-to-r ${feature.color} rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                      className={`w-16 h-16 ${feature.color} rounded-2xl flex items-center justify-center mb-6 shadow-card group-hover:scale-110 transition-transform duration-300`}
                     >
                       <feature.icon className="w-8 h-8 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-800 mb-4 group-hover:text-blue-600 transition-colors">
+                    <h3 className="text-2xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors">
                       {feature.title}
                     </h3>
-                    <p className="text-gray-600 leading-relaxed mb-4">
+                    <p className="text-muted-foreground leading-relaxed mb-4">
                       {feature.description}
                     </p>
-                    {feature.title === "VIT Social Network" && (
-                      <div className="flex items-center text-blue-600 font-semibold group-hover:text-purple-600 transition-colors">
-                        <span>Explore Now</span>
+                    {feature.isClickable && (
+                      <div className="flex items-center text-primary font-semibold group-hover:text-green-600 transition-colors">
+                        <span>
+                          {feature.title === "VIT Social Network" ? "Join Community" : "Access Platform"}
+                        </span>
                         <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                       </div>
                     )}
@@ -543,7 +571,7 @@ const Index = () => {
       </section>
 
       {/* Campus Gallery */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-purple-600">
+      <section className="py-16 bg-slate-50">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -551,49 +579,154 @@ const Index = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold text-white mb-4">
+            <h2 className="text-4xl font-bold text-primary mb-4">
               Our Beautiful Campus
             </h2>
-            <p className="text-xl text-blue-100 max-w-2xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Experience world-class infrastructure and a vibrant learning
               environment
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Campus Tour Video */}
             <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="relative rounded-2xl overflow-hidden shadow-2xl group cursor-pointer"
+              className="lg:col-span-2 relative rounded-2xl overflow-hidden shadow-professional group cursor-pointer"
               onClick={() =>
                 window.open(
-                  "https://youtu.be/cZ590Z8ROws?feature=shared",
+                  "https://youtu.be/cZ590Z8ROws",
                   "_blank"
                 )
               }
             >
-              <div className="w-full h-64 bg-gradient-to-br from-blue-200 to-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-                <div className="text-center text-white">
-                  <Building className="w-12 h-12 mx-auto mb-3" />
-                  <Play className="w-8 h-8 mx-auto mb-2 opacity-80" />
-                  <p className="text-sm">Click to watch campus tour</p>
+              <div className="w-full h-80 campus-photo bg-slate-200 flex items-center justify-center"
+                   style={{
+                     backgroundImage: `url('data:image/svg+xml;base64,${btoa(`
+                       <svg width="600" height="320" xmlns="http://www.w3.org/2000/svg">
+                         <rect width="600" height="320" fill="#e2e8f0"/>
+                         <rect x="50" y="50" width="500" height="220" fill="#cbd5e1" rx="12"/>
+                         <rect x="80" y="80" width="120" height="160" fill="#94a3b8"/>
+                         <rect x="220" y="80" width="120" height="160" fill="#94a3b8"/>
+                         <rect x="360" y="80" width="120" height="160" fill="#94a3b8"/>
+                         <circle cx="300" cy="290" r="40" fill="#22c55e"/>
+                         <circle cx="200" cy="300" r="25" fill="#22c55e"/>
+                         <circle cx="400" cy="300" r="30" fill="#22c55e"/>
+                         <rect x="250" y="140" width="100" height="60" fill="#3b82f6" rx="30"/>
+                         <polygon points="280,160 320,170 280,180" fill="white"/>
+                       </svg>
+                     `)}`
+                   }}>
+                <div className="text-center bg-white/95 backdrop-blur-sm rounded-xl p-8 shadow-xl">
+                  <Play className="w-16 h-16 text-primary mx-auto mb-4" />
+                  <h3 className="text-2xl font-bold text-foreground mb-2">
+                    Virtual Campus Tour
+                  </h3>
+                  <p className="text-muted-foreground mb-4">Take a complete tour of our beautiful campus</p>
+                  <Button className="bg-primary hover:bg-primary-hover text-primary-foreground">
+                    Watch Now
+                  </Button>
                 </div>
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-              <div className="absolute bottom-6 left-6 text-white">
-                <h3 className="text-xl font-bold mb-1">Academic Block</h3>
-                <p className="text-white/90">
-                  State-of-the-art classrooms and laboratories
-                </p>
+              <div className="absolute inset-0 campus-overlay group-hover:bg-black/30 transition-colors duration-300"></div>
+            </motion.div>
+
+            {/* Academic Block */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="relative rounded-2xl overflow-hidden shadow-professional group"
+            >
+              <div className="w-full h-80 campus-photo bg-slate-200"
+                   style={{
+                     backgroundImage: `url('data:image/svg+xml;base64,${btoa(`
+                       <svg width="300" height="320" xmlns="http://www.w3.org/2000/svg">
+                         <rect width="300" height="320" fill="#f1f5f9"/>
+                         <rect x="20" y="40" width="260" height="240" fill="#e2e8f0" rx="8"/>
+                         <rect x="40" y="60" width="60" height="200" fill="#cbd5e1"/>
+                         <rect x="120" y="60" width="60" height="200" fill="#cbd5e1"/>
+                         <rect x="200" y="60" width="60" height="200" fill="#cbd5e1"/>
+                         <circle cx="150" cy="290" r="20" fill="#22c55e"/>
+                         <circle cx="100" cy="300" r="15" fill="#22c55e"/>
+                         <circle cx="200" cy="300" r="18" fill="#22c55e"/>
+                       </svg>
+                     `)}`
+                   }}>
+              </div>
+              <div className="absolute inset-0 campus-overlay"></div>
+              <div className="absolute bottom-4 left-4 text-white">
+                <h3 className="text-lg font-bold mb-1">Academic Block</h3>
+                <p className="text-white/90 text-sm">Modern classrooms & labs</p>
               </div>
             </motion.div>
 
+            {/* Library */}
             <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative rounded-2xl overflow-hidden shadow-2xl group cursor-pointer"
+              className="relative rounded-2xl overflow-hidden shadow-professional group"
+            >
+              <div className="w-full h-64 campus-photo bg-slate-200"
+                   style={{
+                     backgroundImage: `url('data:image/svg+xml;base64,${btoa(`
+                       <svg width="300" height="256" xmlns="http://www.w3.org/2000/svg">
+                         <rect width="300" height="256" fill="#f8fafc"/>
+                         <rect x="30" y="30" width="240" height="196" fill="#e2e8f0" rx="8"/>
+                         <rect x="50" y="50" width="200" height="20" fill="#94a3b8"/>
+                         <rect x="50" y="80" width="200" height="20" fill="#94a3b8"/>
+                         <rect x="50" y="110" width="200" height="20" fill="#94a3b8"/>
+                         <rect x="50" y="140" width="200" height="20" fill="#94a3b8"/>
+                         <rect x="50" y="170" width="200" height="20" fill="#94a3b8"/>
+                         <circle cx="150" cy="220" r="15" fill="#22c55e"/>
+                       </svg>
+                     `)}`
+                   }}>
+              </div>
+              <div className="absolute inset-0 campus-overlay"></div>
+              <div className="absolute bottom-4 left-4 text-white">
+                <h3 className="text-lg font-bold mb-1">Central Library</h3>
+                <p className="text-white/90 text-sm">Extensive digital resources</p>
+              </div>
+            </motion.div>
+
+            {/* Sports Complex */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="relative rounded-2xl overflow-hidden shadow-professional group"
+            >
+              <div className="w-full h-64 campus-photo bg-slate-200"
+                   style={{
+                     backgroundImage: `url('data:image/svg+xml;base64,${btoa(`
+                       <svg width="300" height="256" xmlns="http://www.w3.org/2000/svg">
+                         <rect width="300" height="256" fill="#ecfdf5"/>
+                         <rect x="20" y="40" width="260" height="176" fill="#d1fae5" rx="8"/>
+                         <circle cx="150" cy="128" r="60" fill="#a7f3d0"/>
+                         <circle cx="150" cy="128" r="40" fill="#6ee7b7"/>
+                         <circle cx="150" cy="128" r="20" fill="#34d399"/>
+                         <rect x="50" y="230" width="200" height="10" fill="#22c55e"/>
+                       </svg>
+                     `)}`
+                   }}>
+              </div>
+              <div className="absolute inset-0 campus-overlay"></div>
+              <div className="absolute bottom-4 left-4 text-white">
+                <h3 className="text-lg font-bold mb-1">Sports Complex</h3>
+                <p className="text-white/90 text-sm">Indoor & outdoor facilities</p>
+              </div>
+            </motion.div>
+
+            {/* Instagram Link */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="relative rounded-2xl overflow-hidden shadow-professional group cursor-pointer"
               onClick={() =>
                 window.open(
                   "https://www.instagram.com/official_vitpune/?hl=en",
@@ -601,19 +734,16 @@ const Index = () => {
                 )
               }
             >
-              <div className="w-full h-64 bg-gradient-to-br from-green-200 to-green-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+              <div className="w-full h-64 bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center">
                 <div className="text-center text-white">
-                  <Globe className="w-12 h-12 mx-auto mb-3" />
-                  <Instagram className="w-8 h-8 mx-auto mb-2 opacity-80" />
-                  <p className="text-sm">Follow us on Instagram</p>
+                  <Instagram className="w-16 h-16 mx-auto mb-4" />
+                  <h3 className="text-xl font-bold mb-2">Follow Us</h3>
+                  <p className="text-white/90">@official_vitpune</p>
                 </div>
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-              <div className="absolute bottom-6 left-6 text-white">
-                <h3 className="text-xl font-bold mb-1">Campus Life</h3>
-                <p className="text-white/90">
-                  Lush green spaces for recreation and events
-                </p>
+              <div className="absolute bottom-4 left-4 text-white">
+                <h3 className="text-lg font-bold mb-1">Campus Life</h3>
+                <p className="text-white/90 text-sm">Daily updates & events</p>
               </div>
             </motion.div>
           </div>
@@ -621,7 +751,7 @@ const Index = () => {
       </section>
 
       {/* Contact Section */}
-      <section className="py-16 bg-white/50 backdrop-blur-sm">
+      <section className="py-16 glass">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -629,15 +759,15 @@ const Index = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <h2 className="text-4xl font-bold mb-4 text-primary">
               Get in Touch
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-muted-foreground">
               Ready to start your journey with us?
             </p>
           </motion.div>
 
-          <Card className="max-w-4xl mx-auto border-0 shadow-2xl bg-gradient-to-br from-white to-blue-50/30">
+          <Card className="max-w-4xl mx-auto border shadow-professional bg-card">
             <CardContent className="p-8">
               <div className="grid md:grid-cols-3 gap-8">
                 <motion.div
@@ -646,13 +776,13 @@ const Index = () => {
                   transition={{ duration: 0.6 }}
                   className="text-center group"
                 >
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-card group-hover:scale-110 transition-transform duration-300">
                     <MapPin className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  <h3 className="text-lg font-semibold text-foreground mb-2">
                     Address
                   </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">
+                  <p className="text-muted-foreground text-sm leading-relaxed">
                     Survey No. 3, 4, 9/1, 9/2
                     <br />
                     Kondhwa (Budruk)
@@ -667,16 +797,16 @@ const Index = () => {
                   transition={{ duration: 0.6, delay: 0.1 }}
                   className="text-center group"
                 >
-                  <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    <Phone className="w-8 h-8 text-white" />
+                  <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-card group-hover:scale-110 transition-transform duration-300">
+                    <Phone className="w-8 h-8 text-primary-foreground" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  <h3 className="text-lg font-semibold text-foreground mb-2">
                     Phone
                   </h3>
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-muted-foreground text-sm">
                     +91-20-2660 1881/82/83
                     <br />
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-muted-foreground/70">
                       Mon - Fri, 9:00 AM - 5:00 PM
                     </span>
                   </p>
@@ -688,16 +818,16 @@ const Index = () => {
                   transition={{ duration: 0.6, delay: 0.2 }}
                   className="text-center group"
                 >
-                  <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-card group-hover:scale-110 transition-transform duration-300">
                     <Mail className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  <h3 className="text-lg font-semibold text-foreground mb-2">
                     Email
                   </h3>
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-muted-foreground text-sm">
                     admission@vit.edu
                     <br />
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-muted-foreground/70">
                       We'll respond within 24 hours
                     </span>
                   </p>
